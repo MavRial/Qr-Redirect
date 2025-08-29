@@ -8,27 +8,36 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
+      // 🔹 Configuración de Firebase (usa tu API Key web)
       const firebaseConfig = {
-        apiKey: "TU_API_KEY_AQUI", 
+        apiKey: "AIzaSyAT_dnbVX9iOvZhDkW_EaWhcAUb7Kp-GwA",
         authDomain: "qrgenerators-4ceb1.firebaseapp.com",
         projectId: "qrgenerators-4ceb1",
         storageBucket: "qrgenerators-4ceb1.appspot.com",
         messagingSenderId: "928895206532",
-        appId: "1:928895206532:android:60ae9487f90bad56adeed1"
+        appId: "1:928895206532:android:60ae9487f90bad56adeed1",
+        measurementId: "G-ZJFB8LRT7R"
       };
 
+      
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      async function redirect()
-        const docRef = doc(db, "qrs", "default_qr");
-        const docSnap = await getDoc(docRef);
+      async function redirect() {
+        try {
+          const docRef = doc(db, "qrs", "default_qr");
+          const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const url = docSnap.data().redirectUrl;
-          window.location.href = url;
-        } else {
-          document.body.innerHTML = "<h1>No redirect found</h1>";
+          if (docSnap.exists()) {
+            const url = docSnap.data().redirectUrl;
+            
+            window.location.href = url;
+          } else {
+            document.body.innerHTML = "<h1>No redirect found</h1>";
+          }
+        } catch (error) {
+          console.error(error);
+          document.body.innerHTML = "<h1>Error connecting to Firestore</h1>";
         }
       }
 
